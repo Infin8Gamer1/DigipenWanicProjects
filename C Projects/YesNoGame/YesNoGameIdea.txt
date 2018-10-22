@@ -1,0 +1,9 @@
+Yes No Text Adventure Game Idea
+
+Plane Crashed on Island
+
+To win player must survive the chalanges presented to them
+
+if player finds health they can heal
+if the player is too lazy they will lose
+if player runs out of health they loose
