@@ -1,0 +1,11 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "GroundPhysicsMaterial"
+		var ResourceId = 0x5b6ad9360d4f4775
+		var LoaderType = "PhysicsMaterial"
+		var Version = 0
+	}
+}

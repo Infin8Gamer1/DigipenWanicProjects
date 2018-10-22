@@ -1,0 +1,28 @@
+/********************
+Jacob Holyfield
+10/15/18
+The script that makes the camera follow the player
+*********************/
+
+
+class CameraFollow : ZilchComponent
+{
+  [Property]
+  var Target : CogPath = null;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    if (this.Target.Cog != null)
+    {
+      var newPos = this.Target.Cog.Transform.Translation;
+      newPos.Z = this.Owner.Transform.Translation.Z;
+      this.Owner.Transform.Translation = newPos;
+      
+    }
+  }
+}

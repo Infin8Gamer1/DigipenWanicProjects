@@ -1,0 +1,84 @@
+/***********************
+Jacob Holyfield
+10/4/2018
+A Script to shoot cannon balls
+************************/
+
+class PlayerCannon : ZilchComponent
+{
+  //Projectile Settings
+  
+  [Property]
+  var Projectile : Archetype = null;
+  [Property]
+  var ProjectileSpeed : Real = 20;
+  [Property]
+  var Cooldown : Real = 0.5;
+  
+  [Property]
+  var FireTwordsMouse : Boolean = true;
+  
+  //Input Settings
+  
+  [Property]
+  var FireKey : Keys = Keys.Space;
+  
+  var Timer : Real = 0;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    Zero.Connect(this.Space, Events.MouseUpdate, this.OnMouseUpdate);
+  }
+  
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    this.Timer += event.Dt;
+    
+    if(Zero.Keyboard.KeyIsDown(this.FireKey) && !this.FireTwordsMouse)
+    {
+      var playerFacing = Real3();
+      playerFacing.X = Math.Cos(this.Owner.Transform.EulerAngles.Z + Math.Pi/2);
+      playerFacing.Y = Math.Sin(this.Owner.Transform.EulerAngles.Z + Math.Pi/2);
+      
+      var fireDirection = Math.Cross(playerFacing, Real3(0,0,1));
+      
+      var spawnPosition1 = this.Owner.Transform.Translation + fireDirection * 1;
+      this.FireCannonBall(fireDirection, spawnPosition1, 1.0, false);
+      
+      var spawnPosition2 = this.Owner.Transform.Translation - fireDirection * 1;
+      this.FireCannonBall(fireDirection, spawnPosition2 , -1.0, true);
+    }
+  }
+  
+  
+  function OnMouseUpdate(event : ViewportMouseEvent)
+  {
+    if (event.IsButtonDown(MouseButtons.Left) && this.FireTwordsMouse)
+    {
+      var mousePosition = event.ToWorldZPlane(this.Owner.Transform.Translation.Z);
+      
+      var fireDirection = Math.Normalize(mousePosition - this.Owner.Transform.Translation);
+      
+      var spawnPosition = this.Owner.Transform.Translation + fireDirection * 1;
+      
+      this.FireCannonBall(fireDirection, spawnPosition, 1.0, true);
+      
+    }
+  }
+  
+  function FireCannonBall(fireDirection : Real3, spawnPosition : Real3, fireDirectionVelocityMutiplyer : Real, resetTimer : Boolean)
+  {
+    if(this.Timer >= this.Cooldown)
+    {
+      var cannonBall = this.Space.CreateAtPosition(this.Projectile, spawnPosition);
+      cannonBall.RigidBody.Velocity = (fireDirectionVelocityMutiplyer * fireDirection) * this.ProjectileSpeed;
+      if(resetTimer)
+      {
+        this.Timer = 0.0;
+      }
+    }
+  }
+  
+  
+}

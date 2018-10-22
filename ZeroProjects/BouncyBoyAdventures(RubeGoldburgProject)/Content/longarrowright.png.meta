@@ -1,0 +1,20 @@
+[Version:1]
+ImageContent 
+{
+	SpriteSourceBuilder 
+	{
+		var Name = "longarrowright"
+		var ResourceId = 0x5bf6e49b59f73547
+		var FrameSizeX = 1600
+		var FrameSizeY = 1600
+		var FrameCount = 1
+		var FrameDelay = 0.0833333358
+		var OriginX = 800
+		var OriginY = 800
+		var PixelsPerUnit = 1600
+		var Sampling = SpriteSampling.Linear
+		var Looping = true
+		var Slices = Real4{0, 0, 0, 0}
+		var Fill = SpriteFill.Stretch
+	}
+}

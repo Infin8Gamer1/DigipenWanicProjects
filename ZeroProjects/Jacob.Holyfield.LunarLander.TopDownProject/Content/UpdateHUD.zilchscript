@@ -1,0 +1,34 @@
+/********************
+Jacob Holyfield
+10/16/18
+A class to update the player HUD
+*********************/
+
+
+class UpdateHUD : ZilchComponent
+{
+  [Property]
+  var Player : CogPath = null;
+  
+  var GameOver : Boolean = false;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    Zero.Connect(this.Space, Events.GameOverEvent, this.OnGameOverEvent);
+  }
+
+  function OnGameOverEvent(event : GameOverEvent)
+  {
+    //used to make it so that the values dont go crazy when ship is stationary like it is at the end
+    this.GameOver = true;
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    if(this.Player.Transform != null && !this.GameOver){
+      this.Owner.SpriteText.Text = String.FormatC("Alt: %.1f ->: %.1f \\/: %.1f", this.Player.Transform.Translation.Y, 
+      this.Player.RigidBody.Velocity.X, -this.Player.RigidBody.Velocity.Y);
+    }
+  }
+}

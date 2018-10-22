@@ -1,0 +1,49 @@
+/********************
+Jacob Holyfield
+10/16/18
+A Class that generates terrain. Unfortunately I wasn't able to get the entire level generated
+due to a lack of features in zero required to generate a mesh and ect. For now this script simply 
+randomly generates positions/rotations to place the Rock/Mountian archetype.
+*********************/
+
+class GenerateTerrain : ZilchComponent
+{
+  //OK this is not possible with out a perlin noise feature witch I attempted to make but apparently 
+  //multidimensional arrays arent a thing either!
+  //I am now triggered and am convinced that Unity, Unreal, and any other game engine is far superior for any project
+  //if you can disable caps in a var name causing an error and make it so that there are basic features like multidimensional arrays
+  //then i am willing to change My mind
+  
+  var RandomGen : Random = Random();
+  
+  [Property]
+  var NumberOfMountiansGenerated : Integer = 10;
+  
+  [Property]
+  var XPositionLimits : Real2 = Real2(-20,20);
+  
+  [Property]
+  var YPositionLimits : Real2 = Real2(-5,5);
+  
+  [Property]
+  var RockArchitype : Archetype = null;
+  
+  function Initialize(init : CogInitializer)
+  {
+    if (this.RockArchitype != null){
+      var x : Integer = 0;
+      //btw ++ doesn't work but += 1 does!
+      for(x = 0; x < this.NumberOfMountiansGenerated; x += 1){
+        var pos = Real3(this.RandomGen.Range(this.XPositionLimits.X,this.XPositionLimits.Y), this.RandomGen.Range(this.YPositionLimits.X,this.YPositionLimits.Y), 0);
+        
+        var rotation = Real3(0,0,this.RandomGen.Range(-180,180));
+        
+        var go = this.Space.CreateAtPosition(this.RockArchitype, pos);
+        
+        go.Transform.SetEulerAnglesXYZ(rotation.X * Math.Pi / 180, rotation.Y * Math.Pi / 180, rotation.Z * Math.Pi / 180);
+        
+      }
+    }
+  }
+  
+}

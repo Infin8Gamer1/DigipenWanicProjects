@@ -1,0 +1,81 @@
+[Version:1]
+CollisionTable 
+{
+	var RegisteredGroups = Array
+	{
+		"4e740859314e5515:DefaultGroup"
+		"5bd7c28d326020e2:Enemy"
+		"5bd7c1b978dc50ea:Player"
+		"5bd7c1897d9e824d:PlayerProjectile"
+	}
+	var CollisionFilters = Array
+	{
+		Object
+		{
+			var TypeA = "5bd7c1b978dc50ea:Player"
+			var TypeB = "5bd7c1897d9e824d:PlayerProjectile"
+			var SkipResolution = false
+			var SkipDetectingCollision = true
+			var StartEvent = false
+			var EndEvent = false
+			var PersistedEvent = false
+			var PreSolveEvent = false
+		}
+		Object
+		{
+			var TypeA = "5bd7c1897d9e824d:PlayerProjectile"
+			var TypeB = "5bd7c1897d9e824d:PlayerProjectile"
+			var SkipResolution = false
+			var SkipDetectingCollision = true
+			var StartEvent = false
+			var EndEvent = false
+			var PersistedEvent = false
+			var PreSolveEvent = false
+		}
+		Object
+		{
+			var TypeA = "5bd7c1b978dc50ea:Player"
+			var TypeB = "5bd7c1b978dc50ea:Player"
+			var SkipResolution = false
+			var SkipDetectingCollision = false
+			var StartEvent = false
+			var EndEvent = false
+			var PersistedEvent = false
+			var PreSolveEvent = false
+		}
+		Object
+		{
+			var TypeA = "4e740859314e5515:DefaultGroup"
+			var TypeB = "5bd7c1897d9e824d:PlayerProjectile"
+			var SkipResolution = false
+			var SkipDetectingCollision = false
+			var StartEvent = false
+			var EndEvent = false
+			var PersistedEvent = false
+			var PreSolveEvent = false
+		}
+		Object
+		{
+			var TypeA = "4e740859314e5515:DefaultGroup"
+			var TypeB = "5bd7c1b978dc50ea:Player"
+			var SkipResolution = false
+			var SkipDetectingCollision = false
+			var StartEvent = false
+			var EndEvent = false
+			var PersistedEvent = false
+			var PreSolveEvent = false
+		}
+		Object
+		{
+			var TypeA = "4e740859314e5515:DefaultGroup"
+			var TypeB = "4e740859314e5515:DefaultGroup"
+			var SkipResolution = false
+			var SkipDetectingCollision = false
+			var StartEvent = false
+			var EndEvent = false
+			var PersistedEvent = false
+			var PreSolveEvent = false
+		}
+	}
+	var AutoRegister = true
+}

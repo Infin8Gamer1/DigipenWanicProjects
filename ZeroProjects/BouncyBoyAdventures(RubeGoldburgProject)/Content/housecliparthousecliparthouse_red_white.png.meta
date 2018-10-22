@@ -1,0 +1,20 @@
+[Version:1]
+ImageContent 
+{
+	SpriteSourceBuilder 
+	{
+		var Name = "housecliparthousecliparthouse_red_white"
+		var ResourceId = 0x5bf82c1f5c0441fc
+		var FrameSizeX = 3583
+		var FrameSizeY = 2982
+		var FrameCount = 1
+		var FrameDelay = 0.0833333358
+		var OriginX = 1791
+		var OriginY = 1491
+		var PixelsPerUnit = 447.875
+		var Sampling = SpriteSampling.Linear
+		var Looping = true
+		var Slices = Real4{0, 0, 0, 0}
+		var Fill = SpriteFill.Stretch
+	}
+}

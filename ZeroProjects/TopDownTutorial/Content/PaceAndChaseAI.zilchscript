@@ -1,0 +1,93 @@
+/***********************
+Jacob Holyfield
+10/5/2018
+A Script to let the enemy pace and chase
+************************/
+
+class PaceAndChaseAI : ZilchComponent
+{
+  
+  var Target : Cog = null;
+  //the name of the target to look for
+  [Property]
+  var TargetName : String = "Player";
+  //Chasing Speed
+  [Property]
+  var ChaseSpeed : Real = 5;
+  //Chase Distance
+  [Property]
+  var TargetDetectLength : Real = 10;
+  
+  //The first/start point to be paced between
+  [Property]
+  var FirstPosition : Real3 = Real3();
+  //The second/end point to be paced between
+  [Property]
+  var SecondPosition : Real3 = Real3(1,0,0);
+  //Paceing Speed
+  [Property]
+  var PaceSpeed : Real = 5;
+  //Go to Second Position
+  [Property]
+  var PaceToSecondPos : Boolean = true;
+  
+  function Initialize(init : CogInitializer)
+  {
+    this.Target = this.Space.FindObjectByName(this.TargetName);
+    
+    this.FirstPosition = this.Owner.Transform.Translation + this.FirstPosition;
+    this.SecondPosition = this.Owner.Transform.Translation + this.SecondPosition;
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    if(this.Target != null)
+    {
+      var toTarget = this.Target.Transform.Translation - this.Owner.Transform.Translation;
+      //check if tatget is close enough to chase
+      if (Math.LengthSq(toTarget) <= this.TargetDetectLength * this.TargetDetectLength){
+        this.Chase(event.Dt, toTarget);
+      } else {
+        this.Pace(event.Dt);
+      }
+    } else {
+      this.Pace(event.Dt);
+    }
+  }
+  
+  //used to make object go between FirstPos and SecondPos
+  function Pace(dt : Real)
+  {
+    //Go tword second point or twords first point
+    if(this.PaceToSecondPos)
+    {
+      var direction = this.SecondPosition - this.Owner.Transform.Translation;
+      //check if at second point and change direction point
+      if(Math.LengthSq(direction) < 0.01)
+      {
+        this.PaceToSecondPos = false;
+      } else {
+        direction = Math.Normalize(direction);
+        this.Owner.RigidBody.Velocity += this.PaceSpeed * direction * dt;
+      }
+    } else {
+      var direction = this.FirstPosition - this.Owner.Transform.Translation;
+      //check if at second point and change direction point
+      if(Math.LengthSq(direction) < 0.01)
+      {
+        this.PaceToSecondPos = true;
+      } else {
+        direction = Math.Normalize(direction);
+        this.Owner.RigidBody.Velocity += this.PaceSpeed * direction * dt;
+      }
+    }
+  }
+  
+  //used to chase object
+  function Chase(dt : Real, direction : Real3)
+  {
+    direction = Math.Normalize(direction);
+    this.Owner.RigidBody.Velocity += this.ChaseSpeed * direction * dt;
+  }
+}

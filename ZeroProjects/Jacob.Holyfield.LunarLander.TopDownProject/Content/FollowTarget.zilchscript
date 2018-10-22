@@ -1,0 +1,30 @@
+/********************
+Jacob Holyfield
+10/16/18
+The script that makes the Game Object (G.O.) follow the selected GO with an offset
+*********************/
+
+class FollowTarget : ZilchComponent
+{
+  
+  [Property]
+  var Target : CogPath = null;
+  
+  [Property]
+  var Offset : Real3 = Real3();
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    if (this.Target.Cog != null)
+    {
+      var newPos = this.Target.Cog.Transform.Translation + this.Offset;
+      this.Owner.Transform.Translation = newPos;
+      
+    }
+  }
+}

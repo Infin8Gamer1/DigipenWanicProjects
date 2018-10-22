@@ -1,0 +1,11 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "LunarLanderModuleCollider"
+		var ResourceId = 0x5b6b59fa9fbb4025
+		var LoaderType = "Cog"
+		var Version = 0
+	}
+}

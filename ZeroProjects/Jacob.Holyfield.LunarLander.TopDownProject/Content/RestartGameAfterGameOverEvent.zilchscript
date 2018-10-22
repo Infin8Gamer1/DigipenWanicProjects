@@ -1,0 +1,33 @@
+/********************
+Jacob Holyfield
+10/16/18
+A Class that lets the user restart the game after it is over by pressing the spacebar
+Note: For this to work Property the player has to be in the game at init so that the lissener
+can get the game over event
+*********************/
+
+class RestartGameAfterGameOverEvent : ZilchComponent
+{
+  var CanRestartLevel : Boolean = false;
+  
+  [Property]
+  var LevelToLoad : Level = Level.Game;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    Zero.Connect(this.Space, Events.GameOverEvent, this.OnGameOverEvent);
+  }
+
+  function OnGameOverEvent(event : GameOverEvent)
+  {
+    this.CanRestartLevel = true;
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    if (this.CanRestartLevel && Zero.Keyboard.KeyIsPressed(Keys.Space)){
+      this.Space.LoadLevel(this.LevelToLoad);
+    }
+  }
+}

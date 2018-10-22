@@ -1,0 +1,19 @@
+/***********************
+Jacob Holyfield
+10/8/2018
+A Script to Spawn Something when parent is killed/destroyed
+************************/
+
+class CreateOnDestroy : ZilchComponent
+{
+  [Property]
+  var ArchToSpawn : Archetype = null;
+
+  function Destroyed()
+  {
+    if (this.ArchToSpawn != null && !this.Space.MarkedForDestruction)
+    {
+      this.Space.CreateAtPosition(this.ArchToSpawn, this.Owner.Transform.Translation);
+    }
+  }
+}

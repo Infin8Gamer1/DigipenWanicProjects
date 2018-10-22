@@ -1,0 +1,47 @@
+[Version:1]
+GeometryContent 
+{
+	GeometryImport 
+	{
+		var CollapsePivots = false
+		var OriginOffset = Real3{0, 0, 0}
+		var ScaleFactor = 1
+		var ChangeBasis = false
+		var XBasisTo = BasisType.PositiveX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.PositiveZ
+	}
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "LunarTerrain"
+				var ResourceId = 0x5b6b40f5a904e6c6
+			}
+		}
+	}
+	PhysicsMeshBuilder 
+	{
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "LunarTerrain"
+				var ResourceId = 0x5b6b40f5a904e70c
+			}
+		}
+		var MeshBuilt = PhysicsMeshType.PhysicsMesh
+	}
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x5b6b40f4aae49aa1
+	}
+}

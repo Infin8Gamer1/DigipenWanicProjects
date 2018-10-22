@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "GenerateTerrain"
+		var ResourceId = 0x5b6b2725b864043e
+	}
+}

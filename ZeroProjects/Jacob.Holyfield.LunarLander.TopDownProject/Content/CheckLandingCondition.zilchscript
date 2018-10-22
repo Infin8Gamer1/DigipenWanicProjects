@@ -1,0 +1,112 @@
+/********************
+Jacob Holyfield
+10/15/18
+The script that checks the landing when the player collides with the ground
+*********************/
+
+
+enum GameOverIDs {
+  PlayerDied,
+  PlayerLanded
+}
+
+class GameOverEvent : ZilchEvent
+{
+  var GameOverID : GameOverIDs = GameOverIDs.PlayerDied;
+  var Score : Integer = 0;
+}
+
+class CheckLandingCondition : ZilchComponent
+{
+  sends GameOverEvent : GameOverEvent;
+  
+  [Property]
+  var GoodLandingVelocity : Real2 = Real2(-1, 1);
+  
+  [Property]
+  var GoodLandingAngle : Real2 = Real2(-45, 45);
+  
+  [Property]
+  var Timer : Real = 1;
+  
+  [Property]
+  var ExplosionParticle : Archetype = null;
+  
+  var StartTimer : Boolean = false;
+  var GoodLandingCheck : Boolean = true;
+  var PlayerVelocity : Real3 = Real3(0,0,0);
+  var PlayerAngle : Real = 0;
+  var Colided : Boolean = false;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.CollisionStarted, this.OnCollisionStarted);
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+
+  function OnCollisionStarted(event : CollisionEvent)
+  {
+    //write stuff to the console for debuging
+    
+    /*Console.WriteLine("CollisionStarted");
+    Console.WriteLine(this.PlayerVelocity.Y);*/
+    
+    this.Colided = true;
+    
+    //check if the player is still alive and act apon the results
+    if((this.PlayerVelocity.Y > this.GoodLandingVelocity.X && this.PlayerVelocity.Y < this.GoodLandingVelocity.Y)
+    && (this.PlayerVelocity.X > this.GoodLandingVelocity.X && this.PlayerVelocity.X < this.GoodLandingVelocity.Y) 
+    && (this.PlayerAngle > this.GoodLandingAngle.X && this.PlayerAngle < this.GoodLandingAngle.Y)){
+      this.StartTimer = true;
+      //this.GoodLanding();
+    } else {
+      this.KillPlayer();
+    }
+    
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    //if we didn't already collide then update the velocity value we check to see if the player survived landing
+    if (!this.Colided){
+      this.PlayerVelocity = this.Owner.RigidBody.Velocity;
+      //get player angel and convert it to degrees
+      this.PlayerAngle = this.Owner.Transform.Rotation.Z * 180/Math.Pi;
+    }
+    
+    if(this.StartTimer && this.GoodLandingCheck){
+      this.Timer -= event.Dt;
+      
+      if (this.Timer <= 0){
+        //check again if the player is still in good landing conditions after waiting for this.Timer seconds
+        if((this.PlayerVelocity.Y > this.GoodLandingVelocity.X && this.PlayerVelocity.Y < this.GoodLandingVelocity.Y)
+        && (this.PlayerVelocity.X > this.GoodLandingVelocity.X && this.PlayerVelocity.X < this.GoodLandingVelocity.Y) 
+        && (this.PlayerAngle > this.GoodLandingAngle.X && this.PlayerAngle < this.GoodLandingAngle.Y)){
+          this.GoodLanding();
+          this.GoodLandingCheck = false;
+        }
+      }
+    }
+  }
+  
+  function KillPlayer(){
+    //setup and send game over event
+    var gameOverEvent = GameOverEvent();
+    gameOverEvent.GameOverID = GameOverIDs.PlayerDied;
+    gameOverEvent.Score = -1;
+    this.Space.DispatchEvent(Events.GameOverEvent, gameOverEvent);
+    
+    this.Space.CreateAtPosition(this.ExplosionParticle, this.Owner.Transform.Translation);
+    this.Owner.Destroy();
+  }
+  
+  function GoodLanding(){
+    //setup and send game over event
+    var gameOverEvent = GameOverEvent();
+    gameOverEvent.GameOverID = GameOverIDs.PlayerLanded;
+    gameOverEvent.Score = -2;
+    this.Space.DispatchEvent(Events.GameOverEvent, gameOverEvent);
+    
+    this.Owner.PlayerControler.InputEnabled = false;
+  }
+}

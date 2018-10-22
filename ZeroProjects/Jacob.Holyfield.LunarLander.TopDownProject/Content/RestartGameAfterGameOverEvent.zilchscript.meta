@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "RestartGameAfterGameOverEvent"
+		var ResourceId = 0x5b684bbe9c2a6612
+	}
+}

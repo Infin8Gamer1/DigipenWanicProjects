@@ -1,0 +1,85 @@
+[Version:1]
+Cog 
+{
+	var Name = "DeathParticle"
+	Transform 
+	{
+		var Translation = Real3{0.0666463748, 4.80400229, 2.91324387e-09}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	SpriteParticleSystem 
+	{
+		var Visible = true
+		var ViewCulling = true
+		var VisibilityEvents = true
+		var OverrideBoundingBox = false
+		var LocalAabbCenter = Real3{0, 0, 0}
+		var LocalAabbHalfExtents = Real3{1, 1, 1}
+		var GroupSortValue = 0
+		var Material = "582c575af53d18c9:AlphaSprite"
+		var BoundingBoxSize = 2
+		var ChildSystem = false
+		var SystemSpace = SystemSpace.WorldSpace
+		var WarmUpTime = 0
+		var PreviewInEditor = false
+		var VertexColor = Real4{1, 0, 0, 1}
+		var GeometryMode = SpriteParticleGeometryMode.Billboarded
+		var SpriteSource = "5275aa4d802dd6dc:Square"
+		var ParticleAnimation = SpriteParticleAnimationMode.Single
+		var ParticleSort = SpriteParticleSortMode.None
+		var BeamBaseScale = 1
+		var BeamVelocityScale = 1
+	}
+	SphericalParticleEmitter 
+	{
+		var Active = true
+		var EmitCount = 100
+		var EmitDelay = 0
+		var EmitRate = 200
+		var EmitVariance = 0
+		var EmitRateSoftStartTime = 0
+		var Size = 0.150000006
+		var SizeVariance = 0.0500000007
+		var Lifetime = 0.349999994
+		var LifetimeVariance = 0.0500000007
+		var Spin = 0
+		var SpinVariance = 50
+		var RandomSpin = true
+		var Fill = 1
+		var EmitterVelocityPercent = 0
+		var StartVelocity = Real3{0, 0, 0}
+		var RandomVelocity = Real3{9, 9, 9}
+		var TangentVelocity = Real3{0, 0, 0}
+		var EmitterSize = Real3{0, 0, 0}
+		var FastMovingEmitter = false
+	}
+	LinearParticleAnimator 
+	{
+		var Force = Real3{0, 0, 0}
+		var RandomForce = Real3{0, 0, 0}
+		var Torque = 0
+		var Growth = 0
+		var Dampening = 0
+		var Twist = Real3{0, 0, 0}
+	}
+	ParticleColorAnimator 
+	{
+		var TimeGradient = "5bdbb480b749aa58:ExplosionColorGradient"
+		var VelocityGradient = "null"
+		var MaxParticleSpeed = 5
+	}
+	SelectionIcon 
+	{
+		var Visible = false
+		var VisibilityEvents = true
+		var Material = "56581e2bb81777be:DebugDrawOnTop"
+		var SpriteSource = "59937d65f2659971:ParticleIcon"
+		var ViewScale = 1
+		var OverrideSelections = true
+	}
+	DestroyAfterSeconds 
+	{
+		var Timer = 1
+	}
+}

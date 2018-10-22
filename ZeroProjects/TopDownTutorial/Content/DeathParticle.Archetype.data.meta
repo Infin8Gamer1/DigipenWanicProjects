@@ -1,0 +1,11 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "DeathParticle"
+		var ResourceId = 0x5bdbb942e8b0b78a
+		var LoaderType = "Cog"
+		var Version = 0
+	}
+}

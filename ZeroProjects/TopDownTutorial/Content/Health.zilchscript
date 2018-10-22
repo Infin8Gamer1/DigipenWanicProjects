@@ -1,0 +1,66 @@
+/***********************
+Jacob Holyfield
+10/5/2018
+A Script to take care of health and what happens when the health reaches 0
+************************/
+
+class HealthEvent : ZilchEvent
+{
+  var HealthChange : Integer = -1;
+}
+
+class DeathEvent : ZilchEvent
+{
+  var DeathMessage : String = "You Died, That Sucks";
+}
+
+class Health : ZilchComponent
+{
+  
+  sends DeathEvent : DeathEvent;
+  [Property]
+  var MaxHealth : Integer = 100;
+  [Property]
+  var DestoyAt0Helath : Boolean = true;
+  [Property]
+  var DeathParticleArchitype : Archetype = null;
+  [Property]
+  var UseDeathParticles : Boolean = true;
+  
+  var Health : Integer = -1;
+  
+  function Initialize(init : CogInitializer)
+  {
+    this.Health = this.MaxHealth;
+    Zero.Connect(this.Owner, Events.HealthEvent, this.OnHealthEvent);
+  }
+
+  function OnHealthEvent(event : HealthEvent)
+  {
+    this.Health += event.HealthChange;
+    if(this.Health > this.MaxHealth)
+    {
+      this.Health = this.MaxHealth;
+    }
+    if(this.Health <= 0)
+    {
+      this.Kill();
+    }
+  }
+  
+  function Kill()
+  {
+    var deathEvent = DeathEvent();
+    this.Owner.DispatchEvent(Events.DeathEvent, deathEvent);
+    
+    if (this.UseDeathParticles) {
+      this.Space.CreateAtPosition(this.DeathParticleArchitype, this.Owner.Transform.Translation);
+    }
+    
+    if (this.DestoyAt0Helath){
+      this.Owner.Destroy();
+    }
+  }
+}
+
+

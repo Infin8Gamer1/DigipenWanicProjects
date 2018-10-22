@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "LoadLevelOnClick"
+		var ResourceId = 0x5b686743c79f2cea
+	}
+}

@@ -1,0 +1,42 @@
+/********************
+Jacob Holyfield
+10/16/18
+The script that handels the UI for if the player wins or dies baised on the game over event
+*********************/
+
+class HandelPlayerDeathOrWin : ZilchComponent
+{
+  [Property]
+  var ArchToSpawn : Archetype = null;
+  
+  [Property]
+  var Offset : Real3 = Real3(0,1.5,0);
+  
+  var Handeled : Boolean = false; 
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.GameOverEvent, this.OnGameOverEvent);
+  }
+
+  function OnGameOverEvent(event : GameOverEvent)
+  {
+    if(!this.Handeled){
+      //spawn text to tell player to do stuff and tell result of the run
+      if(this.ArchToSpawn != null){
+        var gameOverText = this.Space.CreateAtPosition(this.ArchToSpawn, this.Owner.Transform.Translation + this.Offset);
+        //set the propertys of the gameobject that we created
+        if(event.GameOverID == GameOverIDs.PlayerDied){
+          gameOverText.SpriteText.Text = "You Died!";
+          gameOverText.SpriteText.VertexColor = Real4(1,0,0,1);
+        } else if(event.GameOverID == GameOverIDs.PlayerLanded){
+          gameOverText.SpriteText.Text = "You Landed!";
+          gameOverText.SpriteText.VertexColor = Real4(0,1,0,1);
+          gameOverText.FindChildByName("Subtitle").SpriteText.Text = "Smooth Moves Commander!";
+        }
+        
+        this.Handeled = true;
+      }
+    }
+  }
+}

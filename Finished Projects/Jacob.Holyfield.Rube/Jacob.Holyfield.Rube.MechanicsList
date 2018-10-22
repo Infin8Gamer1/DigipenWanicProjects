@@ -1,0 +1,30 @@
+Jacob.Holyfield.Rube Mechanics List
+
+-Custom Physics Material on BouncyBoy
+	-He is bouncy!
+	-Rigidbody
+
+-Spining Wheel
+	-Wheel Joint
+	-Weld Joints
+	-Torque Effect
+	
+-Oppsite Gravity Zone
+	-Region
+	-Gravity Effect
+	
+-Wind Zone
+	-Region
+	-Wind Effect
+	
+-Drag Zone
+	-Region
+	-Drag Effect
+	
+-Moving Platform
+	-Custom C Script to move the object from point a to b over time
+	-Kinematic Rigidbody
+	
+-End Credit Scene
+	-Invisible Drag effect
+	-Text Sprites

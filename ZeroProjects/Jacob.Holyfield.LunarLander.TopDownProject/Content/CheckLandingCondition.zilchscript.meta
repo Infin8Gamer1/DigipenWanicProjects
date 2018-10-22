@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "CheckLandingCondition"
+		var ResourceId = 0x5b6ac4651770ef0e
+	}
+}

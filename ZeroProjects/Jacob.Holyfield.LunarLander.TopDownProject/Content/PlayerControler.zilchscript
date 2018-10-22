@@ -1,0 +1,104 @@
+/********************
+Jacob Holyfield
+10/15/18
+The script that controlls player movement controlls
+*********************/
+
+class PlayerControler : ZilchComponent
+{
+  [Property]
+  var InputEnabled : Boolean = true;
+  
+  //Input Keys
+  
+  [Property]
+  var InputUp : Keys = Keys.Up;
+  [Property]
+  var InputLeft : Keys = Keys.Left;
+  [Property]
+  var InputRight : Keys = Keys.Right;
+  //Movement Settings
+  
+  [Property]
+  var TurnSpeed : Real = Math.Pi/4.0;
+  [Property]
+  var Speed : Real = 10.0;
+  
+  [Property]
+  var FireParticles : CogPath = null;
+  
+  
+  [Property]
+  var DrawDebugLines : Boolean = false;
+
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+  
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    var movement = Real3();
+    var currentAngle = this.Owner.Transform.EulerAngles.Z + (Math.Pi/2);
+    var turnAmount = 0.0;
+    
+    if(this.InputEnabled)
+    {
+      if (Zero.Keyboard.KeyIsDown(this.InputUp)){
+        movement.X += Math.Cos(currentAngle);
+        movement.Y += Math.Sin(currentAngle);
+        
+        if(this.FireParticles != null){
+          this.FireParticles.SphericalParticleEmitter.Active = true;
+        }
+      }
+      
+      if (Zero.Keyboard.KeyIsUp(this.InputUp)){
+        if(this.FireParticles != null){
+          this.FireParticles.SphericalParticleEmitter.Active = false;
+        }
+      }
+      
+      if (Zero.Keyboard.KeyIsDown(this.InputLeft)){
+        turnAmount += this.TurnSpeed;
+      }
+      
+      if (Zero.Keyboard.KeyIsDown(this.InputRight)){
+        turnAmount -= this.TurnSpeed;
+      }
+    }
+    movement = Math.Normalize(movement);
+    
+    var accel = movement * this.Speed;
+    
+    this.Owner.RigidBody.Velocity += accel * event.Dt;
+    
+    this.Owner.RigidBody.AngularVelocity += Real3(0,0,turnAmount) * event.Dt;
+    
+    if(this.DrawDebugLines){
+      this.DrawDebug(this.Owner.RigidBody.Velocity, accel);
+    }
+  }
+  
+  function DrawDebug(velocity : Real3, acceleration : Real3){
+    var velocityLine = DebugLine();
+    
+    velocityLine.Start = this.Owner.Transform.Translation;
+    velocityLine.End = velocityLine.Start + velocity;
+    velocityLine.Color = Real4(1,0,0,1);
+    velocityLine.HeadSize = 0.3;
+    
+    DebugDraw.Add(velocityLine);
+    
+    var accelLine = DebugLine();
+    
+    accelLine.Start = this.Owner.Transform.Translation;
+    accelLine.End = accelLine.Start + acceleration;
+    accelLine.Color = Real4(0,0,1,1);
+    accelLine.HeadSize = 0.3;
+    
+    DebugDraw.Add(accelLine);
+  }
+  
+}

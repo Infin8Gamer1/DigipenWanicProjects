@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "CameraZoomBaisedOnPlayerAltitude"
+		var ResourceId = 0x5b68141a6dd95dc8
+	}
+}

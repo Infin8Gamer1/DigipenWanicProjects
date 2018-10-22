@@ -1,0 +1,55 @@
+/***********************
+Jacob Holyfield
+10/5/2018
+A Script to Deal Damage Apon contact with another object
+************************/
+class Damage : ZilchComponent
+{
+  
+  sends HealthEvent : HealthEvent;
+  
+  [Property]
+  var HealthChange : Integer = 0;
+  [Property]
+  var Cooldown : Real = 0.5;
+  
+  var Timer : Real = 0.5;
+  
+  function Initialize(init : CogInitializer)
+  {
+    this.Timer = this.Cooldown;
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    Zero.Connect(this.Owner, Events.CollisionStarted, this.OnCollisionStarted);
+    Zero.Connect(this.Owner, Events.CollisionPersisted, this.OnCollisionPersisted);
+  }
+  
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    this.Timer += event.Dt;
+  }
+  
+  function OnCollisionPersisted(event : CollisionEvent)
+  {
+    this.Damage(event);
+  }
+  
+  function OnCollisionStarted(event : CollisionEvent)
+  {
+    this.Damage(event);
+  }
+  
+  function Damage(event : CollisionEvent){
+    if(this.Timer > this.Cooldown)
+    {
+      //reset timer
+      this.Timer = 0;
+      //setup event
+      var healthEvent = HealthEvent();
+      healthEvent.HealthChange = this.HealthChange;
+      //send event
+      event.OtherObject.DispatchEvent(Events.HealthEvent, healthEvent);
+    }
+  }
+
+  
+}

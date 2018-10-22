@@ -1,0 +1,47 @@
+[Version:1]
+GeometryContent 
+{
+	GeometryImport 
+	{
+		var CollapsePivots = false
+		var OriginOffset = Real3{0, 0, 0}
+		var ScaleFactor = 0.5
+		var ChangeBasis = false
+		var XBasisTo = BasisType.PositiveX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.PositiveZ
+	}
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "LunarLanderModule"
+				var ResourceId = 0x5b6f3d100bde852d
+			}
+		}
+	}
+	PhysicsMeshBuilder 
+	{
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "LunarLanderModule"
+				var ResourceId = 0x5b6f3cde6bc3ba81
+			}
+		}
+		var MeshBuilt = PhysicsMeshType.PhysicsMesh
+	}
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x5b6f3d100be1e0fa
+	}
+}

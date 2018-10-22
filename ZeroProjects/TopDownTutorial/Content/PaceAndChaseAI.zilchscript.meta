@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "PaceAndChaseAI"
+		var ResourceId = 0x5bd7c3f8d02b2b21
+	}
+}

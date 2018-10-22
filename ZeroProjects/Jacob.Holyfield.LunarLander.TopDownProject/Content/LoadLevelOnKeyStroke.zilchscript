@@ -1,0 +1,26 @@
+/********************
+Jacob Holyfield
+10/16/18
+A Class that loads a level when a key is pressed EX: when Escape key is pressed load the main menu
+*********************/
+
+class LoadLevelOnKeyStroke : ZilchComponent
+{
+  [Property]
+  var Key : Keys = Keys.Escape;
+  
+  [Property]
+  var LevelToLoad : Level = Level.MainMenu;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(Zero.Keyboard, Events.KeyDown, this.OnKeyDown);
+  }
+
+  function OnKeyDown(event : KeyboardEvent)
+  {
+    if (event.Key == this.Key){
+      this.Space.LoadLevel(this.LevelToLoad);
+    }
+  }
+}

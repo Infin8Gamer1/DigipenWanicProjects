@@ -1,0 +1,41 @@
+/********************
+Jacob Holyfield
+10/16/18
+The script that changes the zoom of the camera baised on the players altitude
+*********************/
+
+class CameraZoomBaisedOnPlayerAltitude : ZilchComponent
+{
+  [Property]
+  var Player : CogPath = null;
+  
+  [Property]
+  var Scaler : Real = 3.0;
+  
+  [Property]
+  var Offset : Real = 15.0;
+  
+  [Property]
+  var MaxCameraSize : Real = 50;
+  
+  [Property]
+  var MinCameraSize : Real = 15;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    if(this.Player != null && this.Player.Transform != null){
+      this.Owner.Camera.Size = this.Player.Transform.Translation.Y * this.Scaler + this.Offset;
+      if(this.Owner.Camera.Size > this.MaxCameraSize){
+        this.Owner.Camera.Size = this.MaxCameraSize;
+      }
+      if(this.Owner.Camera.Size < this.MinCameraSize){
+        this.Owner.Camera.Size = this.MinCameraSize;
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "CameraFollow"
+		var ResourceId = 0x5b6ac5d362afc7d3
+	}
+}

@@ -1,0 +1,45 @@
+[Version:1]
+Cog 
+{
+	var Name = "RandomRockMountian"
+	Transform 
+	{
+		var Translation = Real3{0, 15, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Model 
+	{
+		var Visible = true
+		var ViewCulling = true
+		var VisibilityEvents = true
+		var OverrideBoundingBox = false
+		var LocalAabbCenter = Real3{0, 0, 0}
+		var LocalAabbHalfExtents = Real3{1, 1, 1}
+		var GroupSortValue = 0
+		var Material = "583afb5e7bf75e18:ZeroMaterial"
+		var Mesh = "5b68be881ed2b064:RandomRockMountian"
+	}
+	MeshCollider 
+	{
+		var Ghost = false
+		var SendsEvents = true
+		var Material = "5b6ad9360d4f4775:GroundPhysicsMaterial"
+		var CollisionGroup = "5b6ad954c8562149:Ground"
+		var Offset = Real3{0, 0, 0}
+		var PhysicsMesh = "5b68be881ed2b0af:RandomRockMountian"
+		var DrawEdges = false
+		var DrawFaces = false
+		var DrawFaceNormals = false
+	}
+	RigidBody 
+	{
+		var Velocity = Real3{0, 0, 0}
+		var AngularVelocity = Real3{0, 0, 0}
+		var DynamicState = RigidBodyDynamicState.Kinematic
+		var AllowSleep = true
+		var Asleep = false
+		var RotationLocked = false
+		var Mode2D = Mode2DStates.InheritFromSpace
+	}
+}

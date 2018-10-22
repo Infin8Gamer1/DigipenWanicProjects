@@ -1,0 +1,84 @@
+[Version:1]
+Cog 
+{
+	var Name = "Enemy"
+	Transform 
+	{
+		var Translation = Real3{0, 15, 0}
+		var Scale = Real3{3, 3, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Sprite 
+	{
+		var Visible = true
+		var ViewCulling = true
+		var VisibilityEvents = true
+		var OverrideBoundingBox = false
+		var LocalAabbCenter = Real3{0, 0, 0}
+		var LocalAabbHalfExtents = Real3{1, 1, 1}
+		var GroupSortValue = 0
+		var Material = "582c575af53d18c9:AlphaSprite"
+		var VertexColor = Real4{1, 0.210000038, 0.210000038, 1}
+		var GeometryMode = SpriteGeometryMode.ZPlane
+		var SpriteSource = "5bd52e1517533ad5:pirate_ship_00000"
+		var FlipX = false
+		var FlipY = true
+		var AnimationActive = true
+		var AnimationSpeed = 1
+		var StartFrame = 0
+	}
+	CapsuleCollider 
+	{
+		var Ghost = false
+		var SendsEvents = true
+		var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+		var CollisionGroup = "5bd7c28d326020e2:Enemy"
+		var Offset = Real3{0, 0, 0}
+		var Radius = 0.25
+		var Height = 0.649999976
+		var Direction = AxisDirection.Y
+		var ScalingMode = CapsuleScalingMode.PreserveHeight
+	}
+	RigidBody 
+	{
+		var Velocity = Real3{0, 0, 0}
+		var AngularVelocity = Real3{0, 0, 0}
+		var DynamicState = RigidBodyDynamicState.Dynamic
+		var AllowSleep = true
+		var Asleep = false
+		var RotationLocked = false
+		var Mode2D = Mode2DStates.InheritFromSpace
+	}
+	DragEffect 
+	{
+		var Active = true
+		var WakeUpOnChange = true
+		var DebugDrawEffect = true
+		var LinearDamping = 2
+		var AngularDamping = 0.100000001
+		var LinearDrag = 0
+		var AngularDrag = 0
+	}
+	PaceAndChaseAI 
+	{
+		var TargetName = "Player"
+		var ChaseSpeed = 10
+		var TargetDetectLength = 10
+		var FirstPosition = Real3{0, 0, 0}
+		var SecondPosition = Real3{0, 5, 0}
+		var PaceSpeed = 10
+		var PaceToSecondPos = true
+	}
+	Health 
+	{
+		var MaxHealth = 100
+		var DestoyAt0Helath = true
+		var DeathParticleArchitype = "5bdbb942e8b0b78a:DeathParticle"
+		var UseDeathParticles = true
+	}
+	Damage 
+	{
+		var HealthChange = -30
+		var Cooldown = 0.5
+	}
+}

@@ -1,0 +1,54 @@
+class MoveBetweenPoints : ZilchComponent
+{
+  
+  [Property]
+  var TargetA : CogPath = null;
+  [Property]
+  var TargetB : CogPath = null;
+  [Property]
+  var TotalTime : Real = 10;
+  
+  var LocalTime : Real = 0;
+  var GoToPointB : Boolean = true;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    //this.LocalTime = this.TotalTime;
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    if(this.TargetA.Cog != null && this.TargetB.Cog != null)
+    {
+      //Decide witch point to go to
+      var prePosition = this.LocalTime / this.TotalTime;
+      prePosition = Math.Clamp(prePosition, 0, 1);
+      if(prePosition == 1){
+        this.GoToPointB = false;
+      } else if (prePosition == 0){
+        this.GoToPointB = true;
+      }
+      
+      //go twords slected point
+      if(this.GoToPointB){
+        this.LocalTime += event.Dt;
+      } else {
+        this.LocalTime -= event.Dt;
+      }
+      this.LocalTime = Math.Clamp(this.LocalTime,0,this.TotalTime);
+      
+      //calculate position
+      var position = this.LocalTime / this.TotalTime;
+      position = Math.Clamp(position, 0, 1);
+      
+      //go there
+      var newPos = this.TargetA.Cog.Transform.Translation;
+      newPos.X = Math.Lerp(this.TargetA.Cog.Transform.Translation.X, this.TargetB.Cog.Transform.Translation.X, position);
+      newPos.Y = Math.Lerp(this.TargetA.Cog.Transform.Translation.Y, this.TargetB.Cog.Transform.Translation.Y, position);
+      newPos.Z = this.Owner.Transform.Translation.Z;
+      
+      this.Owner.Transform.Translation = newPos;
+    }
+  }
+}

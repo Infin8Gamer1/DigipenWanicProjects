@@ -1,0 +1,110 @@
+/***********************
+Jacob Holyfield
+10/3/2018
+A Top Down Controller For An Astroids Like Game
+************************/
+
+class PlayerController1 : ZilchComponent
+{
+  //Debug Settings
+  
+  [Property]
+  var DebugLines : Boolean = false;
+  
+  //Input Declarations
+  
+  [Property]
+  var UseSecondaryKeys : Boolean = true;
+  [Property]
+  var UpKey : Keys = Keys.W;
+  [Property]
+  var SecondaryUpKey : Keys = Keys.Up;
+  [Property]
+  var LeftKey : Keys = Keys.A;
+  [Property]
+  var SecondaryLeftKey : Keys = Keys.Left;
+  [Property]
+  var DownKey : Keys = Keys.S;
+  [Property]
+  var SecondaryDownKey : Keys = Keys.Down;
+  [Property]
+  var RightKey : Keys = Keys.D;
+  [Property]
+  var SecondaryRightKey : Keys = Keys.Right;
+  
+  //Player Settings
+  
+  [Property]
+  var Speed : Real = 10.0;
+  [Property]
+  var TurnSpeed : Real = Math.Pi/4.0;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    //Init vars
+    var movement = Real3();
+    var currentAngle = this.Owner.Transform.EulerAngles.Z + (Math.Pi/2);
+    var turnAmount = 0.0;
+    
+    //Check For Up Key Pressed
+    if(Zero.Keyboard.KeyIsDown(this.UpKey) || Zero.Keyboard.KeyIsDown(this.SecondaryUpKey)){
+      movement.X += Math.Cos(currentAngle);
+      movement.Y += Math.Sin(currentAngle);
+    }
+    //Check For Down Key Pressed
+    if(Zero.Keyboard.KeyIsDown(this.DownKey) || Zero.Keyboard.KeyIsDown(this.SecondaryDownKey)){
+      movement.X -= Math.Cos(currentAngle);
+      movement.Y -= Math.Sin(currentAngle);
+    }
+    //Check For Left Key Pressed
+    if(Zero.Keyboard.KeyIsDown(this.LeftKey) || Zero.Keyboard.KeyIsDown(this.SecondaryLeftKey)){
+      turnAmount += this.TurnSpeed;
+    }
+    //Check For Right Key Pressed
+    if(Zero.Keyboard.KeyIsDown(this.RightKey) || Zero.Keyboard.KeyIsDown(this.SecondaryRightKey)){
+      turnAmount -= this.TurnSpeed;
+    }
+    
+    //make it so that moving diagonaly isn't faster than desired
+    movement = Math.Normalize(movement);
+    
+    //Acceleration Per second
+    var accel = movement * this.Speed;
+    
+    //Set Movement
+    this.Owner.RigidBody.Velocity += accel * event.Dt;
+    
+    this.Owner.RigidBody.AngularVelocity += Real3(0,0,turnAmount) * event.Dt;
+    
+    //draw Debug Lines
+    if(this.DebugLines){
+      this.DrawDebug(this.Owner.RigidBody.Velocity, accel);
+    }
+  }
+  
+  function DrawDebug(velocity : Real3, acceleration : Real3)
+  {
+    var velocityLine = DebugLine();
+    
+    velocityLine.Start = this.Owner.Transform.Translation;
+    velocityLine.End = velocityLine.Start + velocity;
+    velocityLine.Color = Real4(1,0,0,1);
+    velocityLine.HeadSize = 0.3;
+    
+    DebugDraw.Add(velocityLine);
+    
+    var accelerationLine = DebugLine();
+    
+    accelerationLine.Start = this.Owner.Transform.Translation;
+    accelerationLine.End = accelerationLine.Start + acceleration;
+    accelerationLine.Color = Real4(0,0,1,1);
+    accelerationLine.HeadSize = 0.3;
+    
+    DebugDraw.Add(accelerationLine);
+  }
+}

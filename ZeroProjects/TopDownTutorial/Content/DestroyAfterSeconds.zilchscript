@@ -1,0 +1,25 @@
+/***********************
+Jacob Holyfield
+10/8/2018
+A Script to Destroy an object after x seconds
+************************/
+
+class DestroyAfterSeconds : ZilchComponent
+{
+  [Property]
+  var Timer : Real = 1;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    this.Timer -= event.Dt;
+    
+    if (this.Timer <= 0) {
+      this.Owner.Destroy();
+    }
+  }
+}

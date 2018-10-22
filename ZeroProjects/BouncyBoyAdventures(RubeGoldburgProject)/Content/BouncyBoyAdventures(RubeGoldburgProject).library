@@ -1,0 +1,8 @@
+[Version:1]
+ContentLibrary 
+{
+	var Name = "BouncyBoyAdventures(RubeGoldburgProject)"
+	var LibraryId = 0x5bf838ce2ab28d52
+	var SourceControlType = ""
+	var ReadOnly = false
+}
