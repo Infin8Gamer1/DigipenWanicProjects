@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "GameRef"
+		var ResourceId = 0x5b1ff420ba95f10f
+	}
+}

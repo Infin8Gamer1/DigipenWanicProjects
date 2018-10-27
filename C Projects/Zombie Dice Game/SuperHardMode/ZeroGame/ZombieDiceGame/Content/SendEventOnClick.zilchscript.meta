@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "SendEventOnClick"
+		var ResourceId = 0x5b1fca6b4e427c23
+	}
+}

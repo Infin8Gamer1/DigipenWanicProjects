@@ -1,0 +1,17 @@
+[Version:1]
+DataContent 
+{
+	RichAnimationBuilder 
+	{
+		var Name = "DiceSpin2"
+		var ResourceId = 0x5b18683a1d891aef
+		var PreviewArchetype = ""
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Animation"
+		}
+	}
+}

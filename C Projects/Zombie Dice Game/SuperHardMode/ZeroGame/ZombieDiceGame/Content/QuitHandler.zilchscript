@@ -1,0 +1,19 @@
+/********************
+Jacob Holyfield
+10/16/18
+A Class used to make it so that the game doesn't stop running when quit is called
+*********************/
+
+class QuitHandler : ZilchComponent
+{
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.GameSession, Events.GameRequestQuit, this.OnGameRequestQuit);
+  }
+
+  function OnGameRequestQuit(event : GameEvent)
+  {
+    event.Handled = true;
+  }
+
+}

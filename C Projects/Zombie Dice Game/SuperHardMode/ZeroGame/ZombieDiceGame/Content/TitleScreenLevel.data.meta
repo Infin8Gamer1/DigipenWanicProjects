@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "TitleScreenLevel"
+		var ResourceId = 0x5b1ff0d38238b836
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

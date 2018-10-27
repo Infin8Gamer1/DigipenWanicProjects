@@ -1,0 +1,169 @@
+/********************
+Jacob Holyfield
+10/26/18
+A class to update the player HUD
+*********************/
+
+
+class UpdateHUD : ZilchComponent
+{
+  [Property]
+  var GameRefCog : CogPath = null;
+  
+  [Property]
+  var PlayerIDText : CogPath = null;
+  [Property]
+  var PlayerShotsText : CogPath = null;
+  [Property]
+  var PlayerBrainsText : CogPath = null;
+  [Property]
+  var BrainsThisTurn : CogPath = null;
+  [Property]
+  var RerollButton : CogPath = null;
+  
+  [Property]
+  var ZombieDice1 : CogPath = null;
+  [Property]
+  var ZombieDice2 : CogPath = null;
+  [Property]
+  var ZombieDice3 : CogPath = null;
+  
+  [Property]
+  var DiceSpinAnimation : Animation = null;
+  [Property]
+  var DiceSpinAnimation2 : Animation = null;
+  [Property]
+  var DiceSpinAnimation3 : Animation = null;
+  
+  var GameOver : Boolean = false;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    Zero.Connect(this.Space, Events.UpdateDiceHUD, this.OnUpdateDiceHUD);
+  }
+
+  function OnUpdateDiceHUD(event : UpdateDiceHUD)
+  {
+    var gameRef = this.GameRefCog.GameRef;
+    
+    this.ZombieDice1.SimpleAnimation.PlaySingle(this.DiceSpinAnimation, AnimationPlayMode.PlayOnce);
+    this.ZombieDice2.SimpleAnimation.PlaySingle(this.DiceSpinAnimation2, AnimationPlayMode.PlayOnce);
+    this.ZombieDice3.SimpleAnimation.PlaySingle(this.DiceSpinAnimation3, AnimationPlayMode.PlayOnce);
+      //Set the pulled dice mats
+      for(var i = 0; i < 3; ++i){
+        if(gameRef.PulledDicePool[i] == null || gameRef.PulledDicePool[i].DiceType == DiceTypes.Empty) {
+          if(i == 0)
+            this.ZombieDice1.Model.Material = Material.ZeroMaterial;
+          if(i == 1)
+            this.ZombieDice2.Model.Material = Material.ZeroMaterial;
+          if(i == 2)
+            this.ZombieDice3.Model.Material = Material.ZeroMaterial;
+        }
+        
+        if(gameRef.PulledDicePool[i].DiceRarity == DiceRaritys.Green){
+          if(gameRef.PulledDicePool[i].DiceType == DiceTypes.Brain){
+            if(i == 0)
+              this.ZombieDice1.Model.Material = Material.BrainGreenMat;
+            if(i == 1)
+              this.ZombieDice2.Model.Material = Material.BrainGreenMat;
+            if(i == 2)
+              this.ZombieDice3.Model.Material = Material.BrainGreenMat;
+          }
+          if(gameRef.PulledDicePool[i].DiceType == DiceTypes.Runner){
+            if(i == 0)
+              this.ZombieDice1.Model.Material = Material.RunnerGreenMat;
+            if(i == 1)
+              this.ZombieDice2.Model.Material = Material.RunnerGreenMat;
+            if(i == 2)
+              this.ZombieDice3.Model.Material = Material.RunnerGreenMat;
+          }
+          if(gameRef.PulledDicePool[i].DiceType == DiceTypes.ShotGun){
+            if(i == 0)
+              this.ZombieDice1.Model.Material = Material.ShotgunGreenMat;
+            if(i == 1)
+              this.ZombieDice2.Model.Material = Material.ShotgunGreenMat;
+            if(i == 2)
+              this.ZombieDice3.Model.Material = Material.ShotgunGreenMat;
+          }
+        }
+        if(gameRef.PulledDicePool[i].DiceRarity == DiceRaritys.Yellow){
+          if(gameRef.PulledDicePool[i].DiceType == DiceTypes.Brain){
+            if(i == 0)
+              this.ZombieDice1.Model.Material = Material.BrainYellowMat;
+            if(i == 1)
+              this.ZombieDice2.Model.Material = Material.BrainYellowMat;
+            if(i == 2)
+              this.ZombieDice3.Model.Material = Material.BrainYellowMat;
+          }
+          if(gameRef.PulledDicePool[i].DiceType == DiceTypes.Runner){
+            if(i == 0)
+              this.ZombieDice1.Model.Material = Material.RunnerYellowMat;
+            if(i == 1)
+              this.ZombieDice2.Model.Material = Material.RunnerYellowMat;
+            if(i == 2)
+              this.ZombieDice3.Model.Material = Material.RunnerYellowMat;
+          }
+          if(gameRef.PulledDicePool[i].DiceType == DiceTypes.ShotGun){
+            if(i == 0)
+              this.ZombieDice1.Model.Material = Material.ShotgunYellowMat;
+            if(i == 1)
+              this.ZombieDice2.Model.Material = Material.ShotgunYellowMat;
+            if(i == 2)
+              this.ZombieDice3.Model.Material = Material.ShotgunYellowMat;
+          }
+        }
+        if(gameRef.PulledDicePool[i].DiceRarity == DiceRaritys.Red){
+          if(gameRef.PulledDicePool[i].DiceType == DiceTypes.Brain){
+            if(i == 0)
+              this.ZombieDice1.Model.Material = Material.BrainRedMat;
+            if(i == 1)
+              this.ZombieDice2.Model.Material = Material.BrainRedMat;
+            if(i == 2)
+              this.ZombieDice3.Model.Material = Material.BrainRedMat;
+          }
+          if(gameRef.PulledDicePool[i].DiceType == DiceTypes.Runner){
+            if(i == 0)
+              this.ZombieDice1.Model.Material = Material.RunnerRedMat;
+            if(i == 1)
+              this.ZombieDice2.Model.Material = Material.RunnerRedMat;
+            if(i == 2)
+              this.ZombieDice3.Model.Material = Material.RunnerRedMat;
+          }
+          if(gameRef.PulledDicePool[i].DiceType == DiceTypes.ShotGun){
+            if(i == 0)
+              this.ZombieDice1.Model.Material = Material.ShotgunRedMat;
+            if(i == 1)
+              this.ZombieDice2.Model.Material = Material.ShotgunRedMat;
+            if(i == 2)
+              this.ZombieDice3.Model.Material = Material.ShotgunRedMat;
+          }
+        }
+      }
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    if(this.GameRefCog.GameRef != null && !this.GameOver){
+      var gameRef = this.GameRefCog.GameRef;
+      //Set Button Colors
+      if(gameRef.CurrentPlayersBrainCount >= 3){
+        this.RerollButton.UiChangeCursor.Cursor = Cursor.Cross;
+      } else {
+        this.RerollButton.UiChangeCursor.Cursor = Cursor.Hand;
+      }
+      
+      
+      //Set Text Labels
+      this.PlayerIDText.SpriteText.Text = String.FormatC("Player # : %d", gameRef.CurrentPlayersTurn + 1);
+      this.PlayerShotsText.SpriteText.Text = String.FormatC("Shots Taken : %d", gameRef.CurrentPlayersShotgunCount);
+      this.PlayerBrainsText.SpriteText.Text = String.FormatC("Total Brains : %d", gameRef.Players[gameRef.CurrentPlayersTurn].Brains);
+      this.BrainsThisTurn.SpriteText.Text = String.FormatC("Brains This Turn : %d", gameRef.CurrentPlayersBrainCount);
+    }
+    
+    /*if(this.Player.Transform != null && !this.GameOver){
+      this.Owner.SpriteText.Text = String.FormatC("Alt: %.1f ->: %.1f \\/: %.1f", this.Player.Transform.Translation.Y, 
+      this.Player.RigidBody.Velocity.X, -this.Player.RigidBody.Velocity.Y);
+    }*/
+  }
+}

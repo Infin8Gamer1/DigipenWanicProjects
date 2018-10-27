@@ -1,0 +1,34 @@
+/********************
+Jacob Holyfield
+10/26/18
+A class to send an event when a button is clicked
+*********************/
+
+enum ButtonIDs {
+  EndTurn,
+  RollAgain
+}
+
+class ButtonClicked : ZilchEvent {
+  var ButtonID : ButtonIDs = ButtonIDs.EndTurn;
+}
+
+class SendEventOnClick : ZilchComponent
+{
+  [Property]
+  var ButtonID : ButtonIDs = ButtonIDs.EndTurn;
+  
+  sends ButtonClicked : ButtonClicked;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.LeftMouseDown, this.OnLeftClick);
+  }
+
+  function OnLeftClick(event : ViewportMouseEvent)
+  {
+    var buttonClickedEvent = ButtonClicked();
+    buttonClickedEvent.ButtonID = this.ButtonID;
+    this.Space.DispatchEvent(Events.ButtonClicked, buttonClickedEvent);
+  }
+}

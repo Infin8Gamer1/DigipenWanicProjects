@@ -1,0 +1,168 @@
+/********************
+Jacob Holyfield
+10/26/18
+A class to run the logic of the game
+*********************/
+
+class GameOver : ZilchEvent {
+  var WinningPlayerID : Integer = 0;
+}
+
+class UpdateDiceHUD : ZilchEvent {
+  
+}
+
+class GameRef : ZilchComponent
+{
+  sends GameOver : GameOver;
+  sends UpdateDiceHUD : UpdateDiceHUD;
+  
+  [Property]
+  var NumOfPlayers : Integer = 2;
+  
+  var Players : Array[Player] = Array[Player]();
+  
+  var CurrentPlayersTurn : Integer = 0;
+  var CurrentPlayersBrainCount : Integer = 0;
+  var CurrentPlayersShotgunCount : Integer = 0;
+  
+  var DicePool : Array[Dice] = Array[Dice]() {null,null,null,null,null,null,null,null,null,null,null,null,null};
+  var PulledDicePool : Array[Dice] = Array[Dice]() {new Dice(DiceRaritys.Green, DiceTypes.Empty), new Dice(DiceRaritys.Red, DiceTypes.Empty), new Dice(DiceRaritys.Yellow, DiceTypes.Empty)};
+  
+  function Initialize(init : CogInitializer)
+  {
+    //set up all the players
+    for(var x = 0; x < this.NumOfPlayers; x += 1){
+      this.Players.Add(new Player());
+    }
+    
+    //set up Dice Pool with 13 dice 6 green, 4 yellow, 3 red
+    for(var i = 0; i < 13; i += 1){
+      if(i < 6){
+        this.DicePool[i] = new Dice(DiceRaritys.Green, DiceTypes.Empty);
+      }else if (i < 10){
+        this.DicePool[i] = new Dice(DiceRaritys.Yellow, DiceTypes.Empty);
+      }else if (i < 13){
+        this.DicePool[i] = new Dice(DiceRaritys.Red, DiceTypes.Empty);
+      }
+      
+      //set the dice id for use later
+      this.DicePool[i].DiceId = i;
+    }
+    
+    //set up events
+    Zero.Connect(this.Space, Events.ButtonClicked, this.OnButtonClicked);
+  }
+
+  function OnButtonClicked(event : ButtonClicked)
+  {
+    Console.WriteLine("OnButtonClicked Event Triggered");
+    
+    var isPlayerDead : Boolean = false;
+    if(this.CurrentPlayersShotgunCount >= 3){
+      isPlayerDead = true;
+    }
+    
+    if(event.ButtonID == ButtonIDs.EndTurn){
+      //if the player isn't dead then add the brains they aquired durring thier turn and add one to the player turn count
+      if(!isPlayerDead){
+        this.Players[this.CurrentPlayersTurn].Brains += this.CurrentPlayersBrainCount;
+        this.Players[this.CurrentPlayersTurn].Turns += 1;
+      }
+      //cycle through to the next player
+      if(this.CurrentPlayersTurn < this.NumOfPlayers - 1){
+        this.CurrentPlayersTurn += 1;
+      } else {
+        this.CurrentPlayersTurn = 0;
+      }
+      
+      this.ResetCurrentPlayerStats();
+    }
+    
+    if(event.ButtonID == ButtonIDs.RollAgain){
+      if(!isPlayerDead){
+        this.PlayerTurn();
+      }
+    }
+  }
+  
+  function PlayerTurn(){
+    //pull three dice
+    for (var x = 0; x < 3; x += 1){
+      if(this.PulledDicePool[x].DiceType == DiceTypes.Empty){
+        this.PullDice(x);
+      }
+    }
+    var updateDiceHud = new UpdateDiceHUD();
+    this.Space.DispatchEvent(Events.UpdateDiceHUD, updateDiceHud);
+    
+    //roll and sort each of the dice in the pulled dice pool
+    for(var i = 0; i < 3; ++i)
+    {
+      if(this.PulledDicePool[i].DiceType == DiceTypes.Brain){
+        this.CurrentPlayersBrainCount = this.CurrentPlayersBrainCount + 1;
+        //put the dice back in the pool and remove it from the pulled dice pool
+        this.DicePool[this.PulledDicePool[i].DiceId].DiceIsInPool = true;
+        this.PulledDicePool[i].DiceType = DiceTypes.Empty;
+      } else if(this.PulledDicePool[i].DiceType == DiceTypes.ShotGun){
+        this.CurrentPlayersShotgunCount += 1;
+        //put the dice back in the pool and remove it from the pulled dice pool
+        this.DicePool[this.PulledDicePool[i].DiceId].DiceIsInPool = true;
+        this.PulledDicePool[i].DiceType = DiceTypes.Empty;
+      } else if(this.PulledDicePool[i].DiceType == DiceTypes.Runner){
+        //if it is a runner you need to keep it in the pulled dice pool and you just roll it again
+        this.PulledDicePool[i].RollDice();
+      } else if(this.PulledDicePool[i].DiceType == DiceTypes.Empty){
+        Console.WriteLine("Massive Flaw");
+      }
+    }
+  }
+  
+  //used to pull a random dice from the dice pool into the pulled dice pool
+  function PullDice(x : Integer){
+    //check that all the dice havent been pulled
+    var diceInThePool : Boolean = false;
+    for(var y = 0; y < 13; y += 1){
+      if(this.DicePool[y].DiceIsInPool == true){
+        diceInThePool = true;
+      }
+    }
+    
+    //if there are dice left then pull one out
+    if(diceInThePool){
+      var random = new Random();
+      //generate random number between 0 and 12
+      var number = random.RangeExclusiveMax(0,13);
+      //Console.WriteLine(number);
+      //get dice at number
+      var pulledDice = this.DicePool[number];
+      //if dice hasn't been pulled yet then pull it otherwise try again
+      if(pulledDice.DiceIsInPool == true){
+        this.PulledDicePool[x] = pulledDice;
+        this.DicePool[number].DiceIsInPool = false;
+        this.PulledDicePool[x].RollDice();
+      } else {
+        this.PullDice(x);
+      }
+    }
+  }
+  
+  function ResetCurrentPlayerStats(){
+    this.CurrentPlayersShotgunCount = 0;
+    this.CurrentPlayersBrainCount = 0;
+    
+    var num : Integer = this.PulledDicePool.Count;
+    
+    for(var i = 0; i < 13; ++i){
+      this.DicePool[i].DiceIsInPool = true;
+    }
+    
+    for(var i = 0; i < 3; ++i){
+      this.PulledDicePool[i].DiceType = DiceTypes.Empty;
+    }
+    var updateDiceHud = new UpdateDiceHUD();
+    this.Space.DispatchEvent(Events.UpdateDiceHUD, updateDiceHud);
+    
+  }
+  
+}

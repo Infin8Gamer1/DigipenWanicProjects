@@ -1,0 +1,65 @@
+/********************
+Jacob Holyfield
+10/26/18
+A class that is the dice for the game
+*********************/
+
+enum DiceTypes{
+  Brain,
+  Runner,
+  ShotGun,
+  Empty
+}
+
+enum DiceRaritys{
+  Green,
+  Yellow,
+  Red
+}
+
+class Dice
+{
+  var DiceRarity : DiceRaritys;
+  var DiceType : DiceTypes;
+  var DiceIsInPool : Boolean;
+  var DiceId : Integer;
+  
+  constructor (rarity : DiceRaritys, diceType : DiceTypes){
+    this.DiceRarity = rarity;
+    this.DiceType = diceType;
+    this.DiceIsInPool = true;
+  }
+  
+  //roll the dice and set the correct dice type to it
+  function RollDice(){
+    //roll that dice!
+    var random = Random();
+    var number = random.RangeInclusiveMax(0,5);
+    //set the dice type to the dice
+    if(this.DiceRarity == DiceRaritys.Green){
+      if(number >= 0 && number <= 0){
+        this.DiceType = DiceTypes.ShotGun;
+      } else if(number >= 1 && number <= 2){
+        this.DiceType = DiceTypes.Runner;
+      } else if(number >= 3 && number <= 5){
+        this.DiceType = DiceTypes.Brain;
+      }
+    } else if(this.DiceRarity == DiceRaritys.Yellow){
+      if(number >= 0 && number <= 1){
+        this.DiceType = DiceTypes.ShotGun;
+      } else if(number >= 2 && number <= 3){
+        this.DiceType = DiceTypes.Runner;
+      } else if(number >= 4 && number <= 5){
+        this.DiceType = DiceTypes.Brain;
+      }
+    } else if(this.DiceRarity == DiceRaritys.Red){
+      if(number >= 0 && number <= 2){
+        this.DiceType = DiceTypes.ShotGun;
+      } else if(number >= 3 && number <= 4){
+        this.DiceType = DiceTypes.Runner;
+      } else if(number >= 5 && number <= 5){
+        this.DiceType = DiceTypes.Brain;
+      }
+    }
+  }
+}

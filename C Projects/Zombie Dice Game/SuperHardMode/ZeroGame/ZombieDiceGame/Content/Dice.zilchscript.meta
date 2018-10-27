@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "Dice"
+		var ResourceId = 0x5b1fcc28fa8f4c20
+	}
+}

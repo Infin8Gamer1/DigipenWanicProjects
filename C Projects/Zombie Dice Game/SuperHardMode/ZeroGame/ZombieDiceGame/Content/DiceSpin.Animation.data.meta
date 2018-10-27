@@ -1,0 +1,17 @@
+[Version:1]
+DataContent 
+{
+	RichAnimationBuilder 
+	{
+		var Name = "DiceSpin"
+		var ResourceId = 0x5b186bfe39c05a37
+		var PreviewArchetype = "5b1f3271337e4dda:ZombieDiceCube"
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Animation"
+		}
+	}
+}

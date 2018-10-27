@@ -1,0 +1,21 @@
+/********************
+Jacob Holyfield
+10/16/18
+A Class that loads a level when the owner is clicked
+*********************/
+
+class LoadLevelOnClick : ZilchComponent
+{
+  [Property]
+  var LevelToLoad : Level;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.LeftClick, this.OnLeftClick);
+  }
+
+  function OnLeftClick(event : ViewportMouseEvent)
+  {
+    this.Space.LoadLevel(this.LevelToLoad);
+  }
+}

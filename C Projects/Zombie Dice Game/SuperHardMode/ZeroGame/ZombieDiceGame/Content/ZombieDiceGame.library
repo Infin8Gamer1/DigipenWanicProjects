@@ -1,0 +1,8 @@
+[Version:1]
+ContentLibrary 
+{
+	var Name = "ZombieDiceGame"
+	var LibraryId = 0x5b1f38f06b126258
+	var SourceControlType = ""
+	var ReadOnly = false
+}

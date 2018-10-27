@@ -1,0 +1,11 @@
+/********************
+Jacob Holyfield
+10/26/18
+A class that represents a player
+*********************/
+
+class Player
+{
+  var Brains : Integer = 0;
+  var Turns : Integer = 0;
+}
